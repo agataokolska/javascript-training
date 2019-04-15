@@ -1,0 +1,12 @@
+[
+  {
+    "firstName": "Jan",
+    "lastName": "Kowalski",
+    "email": "jan.kowalski@training.pl"
+  },
+  {
+    "firstName": "Marek",
+    "lastName": "Nowak",
+    "email": "marek.nowak@training.pl"
+  }
+]
