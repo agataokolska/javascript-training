@@ -9,34 +9,31 @@ if (typeof library === 'undefined') {
 
     const remoting = $.namespace('pl.library.remoting');
 
-    function emptyFn() {
-    }
-
     function prepareSettings(settings) {
         return  Object.assign({
             method: 'GET',
             url: '',
             data: {},
-            onSuccess: emptyFn,
-            onFailure: emptyFn,
             parse: true
         }, settings);
     }
 
     remoting.ajax = function (settings) {
-        var config = prepareSettings(settings);
-        var xhr = new XMLHttpRequest();
-        xhr.open(config.method, config.url);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status >= 200 && xhr.status <= 300) {
-                    config.onSuccess(config.parse ? JSON.parse(xhr.responseText) : xhr.responseText);
-                } else {
-                    config.onFailure(xhr);
+        return new Promise((resolve, reject) => {
+            const config = prepareSettings(settings);
+            const xhr = new XMLHttpRequest();
+            xhr.open(config.method, config.url);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status >= 200 && xhr.status <= 300) {
+                        resolve(config.parse ? JSON.parse(xhr.responseText) : xhr.responseText);
+                    } else {
+                        reject(xhr);
+                    }
                 }
-            }
-        };
-        xhr.send(config.data);
+            };
+            xhr.send(config.data);
+        });
     };
 
 })(library);

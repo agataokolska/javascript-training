@@ -6,34 +6,30 @@ library.onReady(($) => {
     'use strict';
 
     const remoting = $.namespace('pl.library.remoting');
-    let contactTemplate = '';
 
-    function createCard(contactsHtml, contact) {
-        return contactsHtml += library.evaluate(contactTemplate, contact);
+    function updateContacts(html) {
+        document.querySelector("#contacts").innerHTML = html;
     }
 
-    function onContactsLoaded(contacts) {
-        document.querySelector("#contacts").innerHTML = contacts.reduce(createCard, '');
+    function onLoad([contacts, template]) {
+        const resultHtml = contacts.reduce((html, contact) => html += library.evaluate(template, contact), '');
+        updateContacts(resultHtml);
     }
 
-    function onTemplateLoaded(template) {
-        contactTemplate = template;
-        remoting.ajax({
-            url: 'data/contacts.json',
-            onSuccess: onContactsLoaded,
-            onFailure: onRequestFailure
+    function loadContacts() {
+        return remoting.ajax({
+            url: 'data/contacts.json'
         });
     }
 
-    function onRequestFailure(xhr) {
-        console.log(xhr.status);
+    function loadContactTemplate() {
+        return remoting.ajax({
+            url: 'assets/templates/contact.html',
+            parse: false
+        });
     }
 
-    remoting.ajax({
-        url: 'assets/templates/contact.html',
-        onSuccess: onTemplateLoaded,
-        onFailure: onRequestFailure,
-        parse: false
-    });
+    Promise.all([loadContacts(), loadContactTemplate()])
+        .then(onLoad, (xhr) => console.log(xhr.status));
 
 });
