@@ -1,3 +1,5 @@
+import {library} from "./library";
+
 if (typeof library === 'undefined') {
     throw 'Core library not loaded'
 }

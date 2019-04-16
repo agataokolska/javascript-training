@@ -1,3 +1,7 @@
+import {library} from "../assets/scripts/library";
+import "../assets/scripts/library-remoting";
+import "../assets/styles/styles.scss"
+
 library.onReady(($) => {
     'use strict';
 

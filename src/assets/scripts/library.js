@@ -1,4 +1,4 @@
-const library = (() => {
+export const library = (() => {
     'use strict';
 
     const api = {
