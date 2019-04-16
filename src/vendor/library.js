@@ -2,19 +2,17 @@ const library = (() => {
     'use strict';
 
     const api = {
-        on: on,
-        onReady: onReady,
-        namespace: namespace,
-        evaluate: evaluate
+        on,
+        namespace,
+        evaluate,
+        onReady(callback) {
+            api.on('DOMContentLoaded', window, () => callback(library));
+        },
     };
     const baseNamespace = {};
 
     function on(event, target, callback, scope) {
         target.addEventListener(event, callback.bind(scope || target));
-    }
-
-    function onReady(callback) {
-        api.on('DOMContentLoaded', window, () => callback(library));
     }
 
     function createNamespace(currentNamespace, pathElement) {
